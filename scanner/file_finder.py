@@ -1,3 +1,5 @@
+import os
+
 TARGET_FILES = [
     "package.json",
     "package-lock.json",
@@ -23,17 +25,28 @@ TARGET_EXTENSIONS = [
     ".properties"
 ]
 
-import os
+IGNORE_DIRS = {
+    "node_modules", ".git", "dist", "build", "__pycache__",
+    ".next", ".venv", "venv", "env"
+}
+
+MAX_FILE_SIZE = 200_000
 
 def find_relevant_files(repo_path):
     matches = []
 
-    for root, _, files in os.walk(repo_path):
-        for file in files:
-            if file in ["package.json", "requirements.txt", "Dockerfile", ".gitignore", "makefile", "go.mod", "cargo.toml", "pipfile", "pyproject.toml", "docker-compose.yml", "docker-compose.yaml"]:
-                matches.append(os.path.join(root, file))
+    for root, dirs, files in os.walk(repo_path):
+        dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
 
-            if file.endswith((".yml", ".yaml", ".tf", ".tfvars", ".json", ".toml", ".conf", ".ini", ".properties")):
-                matches.append(os.path.join(root, file))
+        for file in files:
+            full_path = os.path.join(root, file)
+            try:
+                if os.path.getsize(full_path) > MAX_FILE_SIZE:
+                    continue
+            except:
+                continue
+
+            if file in TARGET_FILES or file.endswith(tuple(TARGET_EXTENSIONS)):
+                matches.append(full_path)
 
     return matches
