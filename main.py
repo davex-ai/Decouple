@@ -15,6 +15,7 @@ def get_weight(file):
 
 @app.get("/decouple/scan")
 def scan_repo(repo_url: str):
+    repo_path = None
     try:
         repo_path = clone_repo(repo_url)
 
@@ -22,13 +23,16 @@ def scan_repo(repo_url: str):
         rules = load_rules()
 
         vendor_scores = {}
-
+        MAX_TOTAL_SCORE = 50
         for file in files:
             content = read_file(file)
             weight = get_weight(file)
             scores = detect_vendors(content, rules, weight)
             for vendor, count in scores.items():
                 vendor_scores[vendor] = vendor_scores.get(vendor, 0) + count
+
+            if sum(vendor_scores.values()) > MAX_TOTAL_SCORE:
+                break
 
         total_score = sum(vendor_scores.values()) or 1
 

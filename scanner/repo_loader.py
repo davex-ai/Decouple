@@ -26,5 +26,5 @@ def clone_repo(repo_url: str):
     temp_dir = f"temp_repo_{uuid.uuid4().hex}"
     if os.path.exists(temp_dir):
         safe_rmtree(temp_dir)
-    Repo.clone_from(repo_url, temp_dir)
+    Repo.clone_from(repo_url, temp_dir, depth=1)
     return temp_dir
