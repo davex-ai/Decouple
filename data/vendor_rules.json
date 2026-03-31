@@ -1,0 +1,32 @@
+{
+  "aws": [
+    "aws-sdk", "s3", "lambda", "dynamodb", "ec2", "rds",
+    "iam", "amplify", "cloudformation", "cdk", "sqs", "sns",
+    "eks", "ecs", "fargate", "route53", "vpcs", "secretsmanager"
+  ],
+  "firebase": [
+    "firebase", "firestore", "firebase-auth", "firebase-admin",
+    "firebase-functions", "firebase-hosting", "firebase-storage",
+    "firebase-config", "cloud-messaging"
+  ],
+  "vercel": [
+    "vercel", "nextjs", "vercel-env", "vercel-edge",
+    "vercel-analytics", "vercel-kv", "vercel-postgres"
+  ],
+  "docker": [
+    "docker", "containerd", "buildkit", "dockerfile",
+    "docker-compose", "moby", "alpine", "slim-image"
+  ],
+  "gcp": [
+    "google-cloud", "gcs", "bigquery", "gke", "cloud-run",
+    "cloud-functions", "pubsub", "appengine", "firebase"
+  ],
+  "azure": [
+    "azure-sdk", "cosmosdb", "azure-functions", "aks",
+    "blob-storage", "active-directory", "azure-pipelines", "app-service"
+  ],
+  "iac": [
+    "terraform", "hcl", "pulumi", "ansible", "kubernetes",
+    "helm", "k8s", "kustomize", "cloud-init"
+  ]
+}
