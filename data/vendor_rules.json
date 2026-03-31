@@ -1,32 +1,37 @@
 {
-  "aws": [
-    "aws-sdk", "s3", "lambda", "dynamodb", "ec2", "rds",
-    "iam", "amplify", "cloudformation", "cdk", "sqs", "sns",
-    "eks", "ecs", "fargate", "route53", "vpcs", "secretsmanager"
-  ],
-  "firebase": [
-    "firebase", "firestore", "firebase-auth", "firebase-admin",
-    "firebase-functions", "firebase-hosting", "firebase-storage",
-    "firebase-config", "cloud-messaging"
-  ],
-  "vercel": [
-    "vercel", "nextjs", "vercel-env", "vercel-edge",
-    "vercel-analytics", "vercel-kv", "vercel-postgres"
-  ],
-  "docker": [
-    "docker", "containerd", "buildkit", "dockerfile",
-    "docker-compose", "moby", "alpine", "slim-image"
-  ],
-  "gcp": [
-    "google-cloud", "gcs", "bigquery", "gke", "cloud-run",
-    "cloud-functions", "pubsub", "appengine", "firebase"
-  ],
-  "azure": [
-    "azure-sdk", "cosmosdb", "azure-functions", "aks",
-    "blob-storage", "active-directory", "azure-pipelines", "app-service"
-  ],
-  "iac": [
-    "terraform", "hcl", "pulumi", "ansible", "kubernetes",
-    "helm", "k8s", "kustomize", "cloud-init"
-  ]
+  "aws": {
+    "strong": ["aws-sdk", "cdk", "cloudformation"],
+    "medium": ["s3", "lambda", "dynamodb", "ec2", "rds", "iam", "amplify", "sqs", "sns", "eks", "ecs", "fargate", "route53", "vpcs", "secretsmanager"],
+    "weak": ["aws"]
+  },
+  "firebase": {
+    "strong": ["firebase-admin", "firebase-functions", "firebase-config"],
+    "medium": ["firestore", "firebase-auth", "firebase-hosting", "firebase-storage", "cloud-messaging"],
+    "weak": ["firebase"]
+  },
+  "vercel": {
+    "strong": ["nextjs", "vercel-edge"],
+    "medium": ["vercel-env", "vercel-analytics", "vercel-kv", "vercel-postgres"],
+    "weak": ["vercel"]
+  },
+  "docker": {
+    "strong": ["dockerfile", "docker-compose", "buildkit"],
+    "medium": ["containerd", "moby", "alpine", "slim-image"],
+    "weak": ["docker"]
+  },
+  "gcp": {
+    "strong": ["google-cloud", "gke", "cloud-run"],
+    "medium": ["gcs", "bigquery", "cloud-functions", "pubsub", "appengine", "firebase"],
+    "weak": ["gcp"]
+  },
+  "azure": {
+    "strong": ["azure-sdk", "azure-pipelines"],
+    "medium": ["cosmosdb", "azure-functions", "aks", "blob-storage", "active-directory", "app-service"],
+    "weak": ["azure"]
+  },
+  "iac": {
+    "strong": ["terraform", "pulumi", "ansible", "kubernetes"],
+    "medium": ["hcl", "helm", "k8s", "kustomize", "cloud-init"],
+    "weak": ["iac"]
+  }
 }

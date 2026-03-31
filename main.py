@@ -7,6 +7,12 @@ from scanner.vendor_detector import load_rules, detect_vendors, IMPORTANT_FILES
 
 app = FastAPI()
 
+def get_weight(file):
+    for key, val in IMPORTANT_FILES.items():
+        if file.endswith(key) or key in file:
+            return val
+    return 1
+
 @app.get("/decouple/scan")
 def scan_repo(repo_url: str):
     try:
@@ -19,19 +25,16 @@ def scan_repo(repo_url: str):
 
         for file in files:
             content = read_file(file)
-            weight = 1
-            for key, val in IMPORTANT_FILES.items():
-                if file.endswith(key) or file.endswith(f"{key}vars"):
-                    weight = val
+            weight = get_weight(file)
             scores = detect_vendors(content, rules, weight)
             for vendor, count in scores.items():
                 vendor_scores[vendor] = vendor_scores.get(vendor, 0) + count
 
-        max_score = max(vendor_scores.values(), default=1)
+        total_score = sum(vendor_scores.values()) or 1
 
         final_vendors = [
         v for v, score in vendor_scores.items()
-        if score / max_score >= 0.3
+        if score / total_score >= 0.3
         ]
         # score = compute_risk(list(all_vendors))
         # report = generate_report(list(all_vendors), score)
@@ -40,7 +43,7 @@ def scan_repo(repo_url: str):
             "vendors": final_vendors,
             "scores": vendor_scores,
             "confidence": {
-                v: round(score / max_score, 2)
+                v: round(score / total_score, 2)
                 for v, score in vendor_scores.items()
             }
         }

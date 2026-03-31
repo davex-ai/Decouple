@@ -15,11 +15,24 @@ def load_rules(path="data/vendor_rules.json"):
 def detect_vendors(file_contents, rules, weight=1):
     scores = {}
 
-    content_lower = file_contents.lower()
+    content = file_contents.lower()
 
-    for vendor, keywords in rules.items():
-        for keyword in keywords:
-            if keyword in content_lower:
-                scores[vendor] = scores.get(vendor, 0) + weight
+    for vendor, levels in rules.items():
+        score = 0
+
+        for kw in levels.get("strong", []):
+            if kw in content:
+                score += 3
+
+        for kw in levels.get("medium", []):
+            if kw in content:
+                score += 2
+
+        for kw in levels.get("weak", []):
+            if kw in content:
+                score += 0.5
+
+        if score > 0:
+            scores[vendor] = score * weight
 
     return scores
