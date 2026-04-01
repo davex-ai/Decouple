@@ -5,6 +5,8 @@
     "weak": ["aws"]
   },
   "firebase": {
+      "type": "platform",
+      "maps_to": "gcp",
     "strong": ["firebase-admin", "firebase-functions", "firebase-config"],
     "medium": ["firestore", "firebase-auth", "firebase-hosting", "firebase-storage", "cloud-messaging"],
     "weak": ["firebase"]

@@ -5,13 +5,14 @@ from scanner.parser import read_file, parse_package_json, parse_requirements, pa
     parse_go_mod, parse_pom_xml, parse_pubspec_yaml, parse_pyproject_toml, parse_cargo_toml, parse_csproj, parse_gradle, \
     parse_composer_lock, parse_yarn_lock, parse_cargo_lock, parse_gemfile_lock
 from scanner.vendor_detector import load_rules, detect_vendors, IMPORTANT_FILES
-
+import os
 
 app = FastAPI()
 
 def get_weight(file):
+    filename = os.path.basename(file)
     for key, val in IMPORTANT_FILES.items():
-        if file.endswith(key) or key in file:
+        if filename == key or filename.endswith(key):
             return val
     return 1
 
@@ -36,6 +37,17 @@ parser_map = {
     "go.sum": parse_go_mod  # go.sum often follows similar pathing patterns
     }
 
+def match_dependency(dep, keyword):
+    dep = dep.lower()
+    keyword = keyword.lower()
+
+    return (
+        dep == keyword or
+        dep.startswith(keyword + "-") or
+        dep.startswith("@" + keyword) or
+        keyword in dep.split("/")[-1]
+    )
+
 @app.get("/decouple/scan")
 def scan_repo(repo_url: str):
     repo_path = None
@@ -59,16 +71,26 @@ def scan_repo(repo_url: str):
             if parser:
                 deps = parser(file)
                 is_lockfile = filename in lockfiles
-                for dep in deps:
+                for dep, dep_weight in deps.items():
                     for vendor, levels in rules.items():
                         for level, value in [("strong", 5), ("medium", 3)]:
                             current_score = 1 if is_lockfile else value
                             for kw in levels.get(level, []):
-                                if kw in dep:
-                                    if vendor_type == "platform":
-                                        vendor_scores[vendor] += score
-                                        vendor_scores[maps_to] += score * 0.5
+                                if match_dependency(dep, kw):
+                                    vendor_meta = rules[vendor]
+                                    vendor_type = vendor_meta.get("type")
+                                    maps_to = vendor_meta.get("maps_to")
+
                                     vendor_scores[vendor] = vendor_scores.get(vendor, 0) + current_score
+
+                                    if vendor_type == "platform" and maps_to:
+                                        vendor_scores[maps_to] = vendor_scores.get(maps_to, 0) + current_score * 0.5
+                                    MAX_VENDOR_SCORE = 20
+
+                                    vendor_scores[vendor] = min(
+                                        vendor_scores.get(vendor, 0) + current_score,
+                                        MAX_VENDOR_SCORE
+                                    )
                 continue
             content = read_file(file)
             weight = get_weight(file)
@@ -80,13 +102,12 @@ def scan_repo(repo_url: str):
                 break
 
         total_score = sum(vendor_scores.values()) or 1
+        MIN_EVIDENCE = 5
 
         final_vendors = [
         v for v, score in vendor_scores.items()
-        if score / total_score >= 0.3
+        if score >= MIN_EVIDENCE
         ]
-        # score = compute_risk(list(all_vendors))
-        # report = generate_report(list(all_vendors), score)
 
         return {
             "vendors": final_vendors,
