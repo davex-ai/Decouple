@@ -1,24 +1,24 @@
 {
   "aws": {
     "services": {
-      "aws-sdk": ["aws-sdk"],
-      "cdk": ["cdk"],
-      "cloudformation": ["cloudformation"],
-      "s3": ["s3"],
-      "lambda": ["lambda"],
-      "dynamodb": ["dynamodb"],
-      "ec2": ["ec2"],
-      "rds": ["rds"],
-      "iam": ["iam"],
-      "amplify": ["amplify"],
-      "sqs": ["sqs"],
-      "sns": ["sns"],
-      "eks": ["eks"],
-      "ecs": ["ecs"],
+      "aws-sdk": ["aws-sdk", "@aws-sdk", "amazonaws", "aws-amplify"],
+      "cdk": ["aws-cdk", "@aws-cdk", "cdk"],
+      "cloudformation": ["cloudformation", "cloud-formation"],
+      "s3": ["aws-s3", "@aws-sdk/client-s3", "s3"],
+      "lambda": ["aws-lambda", "@aws-sdk/client-lambda", "lambda"],
+      "dynamodb": ["dynamodb", "aws-dynamodb", "@aws-sdk/client-dynamodb", "dynamoose"],
+      "ec2": ["aws-ec2", "@aws-sdk/client-ec2", "ec2"],
+      "rds": ["aws-rds", "@aws-sdk/client-rds", "rds"],
+      "iam": ["aws-iam", "@aws-sdk/client-iam", "iam"],
+      "amplify": ["amplify", "aws-amplify", "@aws-amplify"],
+      "sqs": ["aws-sqs", "@aws-sdk/client-sqs", "sqs"],
+      "sns": ["aws-sns", "@aws-sdk/client-sns", "sns"],
+      "eks": ["aws-eks", "eks"],
+      "ecs": ["aws-ecs", "ecs"],
       "fargate": ["fargate"],
-      "route53": ["route53"],
-      "vpcs": ["vpcs"],
-      "secretsmanager": ["secretsmanager"],
+      "route53": ["route53", "aws-route53"],
+      "vpcs": ["vpcs", "aws-vpc"],
+      "secretsmanager": ["secretsmanager", "aws-secretsmanager", "@aws-sdk/client-secrets-manager"],
       "aws": ["aws"]
     }
   },
@@ -27,22 +27,22 @@
       "firebase-admin": ["firebase-admin"],
       "firebase-functions": ["firebase-functions"],
       "firebase-config": ["firebase-config"],
-      "firestore": ["firestore"],
-      "firebase-auth": ["firebase-auth"],
+      "firestore": ["firestore", "@firebase/firestore", "firebase-firestore"],
+      "firebase-auth": ["firebase-auth", "@firebase/auth", "firebase/auth"],
       "firebase-hosting": ["firebase-hosting"],
-      "firebase-storage": ["firebase-storage"],
-      "cloud-messaging": ["cloud-messaging"],
-      "firebase": ["firebase"]
+      "firebase-storage": ["firebase-storage", "@firebase/storage"],
+      "cloud-messaging": ["firebase-messaging", "@firebase/messaging", "cloud-messaging"],
+      "firebase": ["firebase", "@firebase/app", "firebase/app"]
     }
   },
   "vercel": {
     "services": {
-      "nextjs": ["nextjs"],
-      "vercel-edge": ["vercel-edge"],
-      "vercel-env": ["vercel-env"],
-      "vercel-analytics": ["vercel-analytics"],
-      "vercel-kv": ["vercel-kv"],
-      "vercel-postgres": ["vercel-postgres"],
+      "nextjs": ["next", "next/router", "next/image", "next/link"],
+      "vercel-edge": ["vercel-edge", "@vercel/edge"],
+      "vercel-env": ["vercel-env", "@vercel/env"],
+      "vercel-analytics": ["@vercel/analytics", "vercel-analytics"],
+      "vercel-kv": ["@vercel/kv", "vercel-kv"],
+      "vercel-postgres": ["@vercel/postgres", "vercel-postgres"],
       "vercel": ["vercel"]
     }
   },
@@ -60,27 +60,27 @@
   },
   "gcp": {
     "services": {
-      "google-cloud": ["google-cloud"],
-      "gke": ["gke"],
-      "cloud-run": ["cloud-run"],
-      "gcs": ["gcs"],
-      "bigquery": ["bigquery"],
-      "cloud-functions": ["cloud-functions"],
-      "pubsub": ["pubsub"],
-      "appengine": ["appengine"],
+      "google-cloud": ["google-cloud", "@google-cloud", "googleapis"],
+      "gke": ["gke", "google-container"],
+      "cloud-run": ["cloud-run", "google-cloud-run"],
+      "gcs": ["gcs", "@google-cloud/storage", "google-cloud-storage"],
+      "bigquery": ["bigquery", "@google-cloud/bigquery"],
+      "cloud-functions": ["cloud-functions", "@google-cloud/functions"],
+      "pubsub": ["pubsub", "@google-cloud/pubsub"],
+      "appengine": ["appengine", "app-engine"],
       "firebase": ["firebase"],
       "gcp": ["gcp"]
     }
   },
   "azure": {
     "services": {
-      "azure-sdk": ["azure-sdk"],
+      "azure-sdk": ["@azure", "azure-sdk", "azure-identity", "azure-storage"],
       "azure-pipelines": ["azure-pipelines"],
-      "cosmosdb": ["cosmosdb"],
-      "azure-functions": ["azure-functions"],
+      "cosmosdb": ["cosmosdb", "@azure/cosmos"],
+      "azure-functions": ["azure-functions", "@azure/functions"],
       "aks": ["aks"],
-      "blob-storage": ["blob-storage"],
-      "active-directory": ["active-directory"],
+      "blob-storage": ["blob-storage", "@azure/storage-blob"],
+      "active-directory": ["active-directory", "@azure/msal", "msal"],
       "app-service": ["app-service"],
       "azure": ["azure"]
     }
@@ -88,9 +88,9 @@
   "iac": {
     "services": {
       "terraform": ["terraform"],
-      "pulumi": ["pulumi"],
+      "pulumi": ["pulumi", "@pulumi"],
       "ansible": ["ansible"],
-      "kubernetes": ["kubernetes"],
+      "kubernetes": ["kubernetes", "@kubernetes/client-node"],
       "hcl": ["hcl"],
       "helm": ["helm"],
       "k8s": ["k8s"],

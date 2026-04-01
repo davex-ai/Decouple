@@ -1,29 +1,41 @@
 import os
 
-# Case-sensitive filenames to always include.
+# Case-sensitive filenames to always collect.
 TARGET_FILES = {
     "package.json",
     "package-lock.json",
     "requirements.txt",
-    "Pipfile",           # capital P (Python convention)
+    "Pipfile",
     "pyproject.toml",
-    "Dockerfile",        # capital D
+    "Dockerfile",
     ".gitignore",
-    "Makefile",          # capital M
+    "Makefile",
     "go.mod",
-    "Cargo.toml",        # capital C (Rust convention)
+    "Cargo.toml",
 }
 
+# File extensions to collect.
+# SOURCE CODE EXTENSIONS ARE REQUIRED so that detect_imports() can scan
+# actual import statements in .ts, .js, .py, .dart, etc.
 TARGET_EXTENSIONS = {
-    ".yml",
-    ".yaml",
-    ".tf",
-    ".tfvars",
-    ".json",
-    ".toml",
-    ".conf",
-    ".ini",
-    ".properties",
+    # Config / IaC
+    ".yml", ".yaml",
+    ".tf", ".tfvars",
+    ".json", ".toml",
+    ".conf", ".ini", ".properties",
+    # Source code — needed for import-level detection
+    ".js", ".mjs", ".cjs",
+    ".ts", ".tsx", ".jsx",
+    ".py",
+    ".dart",
+    ".go",
+    ".rb",
+    ".php",
+    ".java", ".kt", ".scala",
+    ".cs",
+    ".rs",
+    # Gradle build scripts
+    ".gradle", ".gradle.kts",
 }
 
 IGNORE_DIRS = {
@@ -48,7 +60,8 @@ def find_relevant_files(repo_path: str) -> list[str]:
             except OSError:
                 continue
 
-            if filename in TARGET_FILES or os.path.splitext(filename)[1] in TARGET_EXTENSIONS:
+            ext = os.path.splitext(filename)[1]
+            if filename in TARGET_FILES or ext in TARGET_EXTENSIONS:
                 matches.append(full_path)
 
     return matches
