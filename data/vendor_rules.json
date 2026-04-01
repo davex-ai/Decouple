@@ -1,39 +1,102 @@
 {
   "aws": {
-    "strong": ["aws-sdk", "cdk", "cloudformation"],
-    "medium": ["s3", "lambda", "dynamodb", "ec2", "rds", "iam", "amplify", "sqs", "sns", "eks", "ecs", "fargate", "route53", "vpcs", "secretsmanager"],
-    "weak": ["aws"]
+    "services": {
+      "aws-sdk": ["aws-sdk"],
+      "cdk": ["cdk"],
+      "cloudformation": ["cloudformation"],
+      "s3": ["s3"],
+      "lambda": ["lambda"],
+      "dynamodb": ["dynamodb"],
+      "ec2": ["ec2"],
+      "rds": ["rds"],
+      "iam": ["iam"],
+      "amplify": ["amplify"],
+      "sqs": ["sqs"],
+      "sns": ["sns"],
+      "eks": ["eks"],
+      "ecs": ["ecs"],
+      "fargate": ["fargate"],
+      "route53": ["route53"],
+      "vpcs": ["vpcs"],
+      "secretsmanager": ["secretsmanager"],
+      "aws": ["aws"]
+    }
   },
   "firebase": {
-      "type": "platform",
-      "maps_to": "gcp",
-    "strong": ["firebase-admin", "firebase-functions", "firebase-config"],
-    "medium": ["firestore", "firebase-auth", "firebase-hosting", "firebase-storage", "cloud-messaging"],
-    "weak": ["firebase"]
+    "services": {
+      "firebase-admin": ["firebase-admin"],
+      "firebase-functions": ["firebase-functions"],
+      "firebase-config": ["firebase-config"],
+      "firestore": ["firestore"],
+      "firebase-auth": ["firebase-auth"],
+      "firebase-hosting": ["firebase-hosting"],
+      "firebase-storage": ["firebase-storage"],
+      "cloud-messaging": ["cloud-messaging"],
+      "firebase": ["firebase"]
+    }
   },
   "vercel": {
-    "strong": ["nextjs", "vercel-edge"],
-    "medium": ["vercel-env", "vercel-analytics", "vercel-kv", "vercel-postgres"],
-    "weak": ["vercel"]
+    "services": {
+      "nextjs": ["nextjs"],
+      "vercel-edge": ["vercel-edge"],
+      "vercel-env": ["vercel-env"],
+      "vercel-analytics": ["vercel-analytics"],
+      "vercel-kv": ["vercel-kv"],
+      "vercel-postgres": ["vercel-postgres"],
+      "vercel": ["vercel"]
+    }
   },
   "docker": {
-    "strong": ["dockerfile", "docker-compose", "buildkit"],
-    "medium": ["containerd", "moby", "alpine", "slim-image"],
-    "weak": ["docker"]
+    "services": {
+      "dockerfile": ["dockerfile"],
+      "docker-compose": ["docker-compose"],
+      "buildkit": ["buildkit"],
+      "containerd": ["containerd"],
+      "moby": ["moby"],
+      "alpine": ["alpine"],
+      "slim-image": ["slim-image"],
+      "docker": ["docker"]
+    }
   },
   "gcp": {
-    "strong": ["google-cloud", "gke", "cloud-run"],
-    "medium": ["gcs", "bigquery", "cloud-functions", "pubsub", "appengine", "firebase"],
-    "weak": ["gcp"]
+    "services": {
+      "google-cloud": ["google-cloud"],
+      "gke": ["gke"],
+      "cloud-run": ["cloud-run"],
+      "gcs": ["gcs"],
+      "bigquery": ["bigquery"],
+      "cloud-functions": ["cloud-functions"],
+      "pubsub": ["pubsub"],
+      "appengine": ["appengine"],
+      "firebase": ["firebase"],
+      "gcp": ["gcp"]
+    }
   },
   "azure": {
-    "strong": ["azure-sdk", "azure-pipelines"],
-    "medium": ["cosmosdb", "azure-functions", "aks", "blob-storage", "active-directory", "app-service"],
-    "weak": ["azure"]
+    "services": {
+      "azure-sdk": ["azure-sdk"],
+      "azure-pipelines": ["azure-pipelines"],
+      "cosmosdb": ["cosmosdb"],
+      "azure-functions": ["azure-functions"],
+      "aks": ["aks"],
+      "blob-storage": ["blob-storage"],
+      "active-directory": ["active-directory"],
+      "app-service": ["app-service"],
+      "azure": ["azure"]
+    }
   },
   "iac": {
-    "strong": ["terraform", "pulumi", "ansible", "kubernetes"],
-    "medium": ["hcl", "helm", "k8s", "kustomize", "cloud-init"],
-    "weak": ["iac"]
+    "services": {
+      "terraform": ["terraform"],
+      "pulumi": ["pulumi"],
+      "ansible": ["ansible"],
+      "kubernetes": ["kubernetes"],
+      "hcl": ["hcl"],
+      "helm": ["helm"],
+      "k8s": ["k8s"],
+      "kustomize": ["kustomize"],
+      "cloud-init": ["cloud-init"],
+      "iac": ["iac"]
+    }
   }
 }

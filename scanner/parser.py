@@ -1,7 +1,7 @@
 import json
 import re
-# Make all parsers return:
-#{"dependency_name": weight}
+
+
 def read_file(file_path):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -129,7 +129,7 @@ def parse_pyproject_toml(file_path):
 
 def parse_requirements(file_path):
     """Original helper for requirements.txt"""
-    deps = []
+    deps = {}
     try:
         with open(file_path) as f:
             for line in f:
@@ -137,7 +137,7 @@ def parse_requirements(file_path):
                 if line and not line.startswith("#"):
                     # Strip version specifiers
                     dep = re.split(r'[<>=!]', line)[0].strip().lower()
-                    deps.append(dep)
+                    deps[dep] = 1
     except:
         pass
     return deps
