@@ -146,6 +146,18 @@ def detect_imports(content: str, rules: dict) -> dict:
                         found[key] = found.get(key, 0) + 1
     return found
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DEBUG ENDPOINT
+# Use this to diagnose why a repo returns empty results.
+# GET /decouple/debug?repo_url=<url>
+#
+# Returns:
+#   files_found       — every file the scanner picked up (relative paths)
+#   per_file          — for each file: parsed deps, matched services, import hits, fuzzy hits
+#   rules_loaded      — whether vendor_rules.json loaded OK
+#   keyword_index_size— how many keywords are in the index
+# ─────────────────────────────────────────────────────────────────────────────
 @app.get("/decouple/debug")
 def debug_scan(repo_url: str):
     repo_path = None
