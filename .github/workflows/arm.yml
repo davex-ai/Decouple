@@ -43,4 +43,4 @@ jobs:
             --base main \
             --head "$BRANCH_NAME")
           
-          gh pr merge "$PR_URL" --auto --squash --delete-branch --admin
+          gh pr merge "$PR_URL" --squash --delete-branch --admin
