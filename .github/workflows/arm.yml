@@ -1,0 +1,48 @@
+name: Co-authored PR and Merge
+on:
+  schedule:
+    - cron: "0 */2 * * *"  # Runs every 2 hours
+  workflow_dispatch:     
+
+permissions: 
+  contents: write
+  pull-requests: write
+
+jobs:
+  coauthor-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: 
+          token: ${{ secrets.GH_PAT }}
+          fetch-depth: 0
+
+      - name: Create and Merge PR
+        env: 
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          # 1. Setup Git Identity
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 2. Create a unique branch
+          BRANCH_NAME="auto-branch-$(date +%s)"
+          git checkout -b "$BRANCH_NAME"
+          
+          # 3. Create a commit (Forces a commit even if no files changed)
+          # Note: The second -m creates the necessary blank line for the co-author trailer
+          git commit --allow-empty \
+            -m "Automated co-authored update" \
+            -m "Co-authored-by: Name <omotoyedave4@gmail.com>"
+          
+          # 4. Push and Open PR
+          git push origin "$BRANCH_NAME"
+          
+          PR_URL=$(gh pr create \
+            --title "Scheduled Co-authored Update" \
+            --body "Automated PR with co-author attribution." \
+            --base main \
+            --head "$BRANCH_NAME")
+          
+          # 5. Squash Merge to preserve co-author info in the main history
+          gh pr merge "$PR_URL" --squash --delete-branch
