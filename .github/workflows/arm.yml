@@ -19,33 +19,28 @@ jobs:
 
       - name: Create and Merge PR
         env: 
-          # Using your PAT for everything
+          # This must match your secret name exactly (GH_PAT)
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          # 1. Setup Git Identity
+          # Setup Git Identity
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 2. Create a unique branch
+          # Create branch and empty commit
           BRANCH_NAME="auto-branch-$(date +%s)"
           git checkout -b "$BRANCH_NAME"
-          
-          # 3. Create an empty commit with co-author trailer
           git commit --allow-empty \
             -m "Automated co-authored update" \
             -m "Co-authored-by: Name <omotoyedave4@gmail.com>"
           
-          # 4. Push
+          # Push changes
           git push origin "$BRANCH_NAME"
           
-          # 5. Create the PR and capture the URL
+          # Create and Merge PR
           PR_URL=$(gh pr create \
             --title "Scheduled Co-authored Update" \
             --body "Automated PR with co-author attribution." \
             --base main \
             --head "$BRANCH_NAME")
           
-          echo "PR Created: $PR_URL"
-          
-          # 6. Merge immediately (Succeeds because PATs have higher authority)
-          gh pr merge "$PR_URL" --squash --delete-branch --admin
+          gh pr merge "$PR_URL" --auto --squash --delete-branch --admin
