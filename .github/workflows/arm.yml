@@ -1,7 +1,7 @@
 name: Co-authored PR and Merge
 on:
   schedule:
-    - cron: "0 */2 * * *"  # Runs every 2 hours
+    - cron: "0 */2 * * *"
   workflow_dispatch:     
 
 permissions: 
@@ -19,8 +19,8 @@ jobs:
 
       - name: Create and Merge PR
         env: 
-          # Use GITHUB_TOKEN (built-in) instead of GH_PAT (custom secret)
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Using your PAT for everything
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           # 1. Setup Git Identity
           git config --global user.name "github-actions[bot]"
@@ -35,15 +35,17 @@ jobs:
             -m "Automated co-authored update" \
             -m "Co-authored-by: Name <omotoyedave4@gmail.com>"
           
-          # 4. Push and Open PR
+          # 4. Push
           git push origin "$BRANCH_NAME"
           
-          # This command was failing because GH_TOKEN was empty/invalid
+          # 5. Create the PR and capture the URL
           PR_URL=$(gh pr create \
             --title "Scheduled Co-authored Update" \
             --body "Automated PR with co-author attribution." \
             --base main \
             --head "$BRANCH_NAME")
           
-          # 5. Squash Merge
-          gh pr merge "$PR_URL" --squash --delete-branch
+          echo "PR Created: $PR_URL"
+          
+          # 6. Merge immediately (Succeeds because PATs have higher authority)
+          gh pr merge "$PR_URL" --squash --delete-branch --admin
