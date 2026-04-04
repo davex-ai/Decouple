@@ -19,7 +19,8 @@ jobs:
 
       - name: Create and Merge PR
         env: 
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          # Use GITHUB_TOKEN (built-in) instead of GH_PAT (custom secret)
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # 1. Setup Git Identity
           git config --global user.name "github-actions[bot]"
@@ -29,8 +30,7 @@ jobs:
           BRANCH_NAME="auto-branch-$(date +%s)"
           git checkout -b "$BRANCH_NAME"
           
-          # 3. Create a commit (Forces a commit even if no files changed)
-          # Note: The second -m creates the necessary blank line for the co-author trailer
+          # 3. Create an empty commit with co-author trailer
           git commit --allow-empty \
             -m "Automated co-authored update" \
             -m "Co-authored-by: Name <omotoyedave4@gmail.com>"
@@ -38,11 +38,12 @@ jobs:
           # 4. Push and Open PR
           git push origin "$BRANCH_NAME"
           
+          # This command was failing because GH_TOKEN was empty/invalid
           PR_URL=$(gh pr create \
             --title "Scheduled Co-authored Update" \
             --body "Automated PR with co-author attribution." \
             --base main \
             --head "$BRANCH_NAME")
           
-          # 5. Squash Merge to preserve co-author info in the main history
+          # 5. Squash Merge
           gh pr merge "$PR_URL" --squash --delete-branch
